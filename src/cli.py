@@ -51,7 +51,7 @@ def cmd_quick_sort(n: Optional[List[str]] = typer.Argument(None)) -> None:
     typer.echo(quick_sort(n))
 
 @app.command("sort_radix")
-def cmd_radix_sort(n: Optional[List[str]] = typer.Argument(None), base: int = 10) -> None:
+def cmd_radix_sort(base: int = 10, n: Optional[List[str]] = typer.Argument(None)) -> None:
     """Вызов sort_radix"""
     if n is None:
         n = []
@@ -67,7 +67,7 @@ def cmd_bubble_sort(n: Optional[List[int]] = typer.Argument(None)) -> None:
     typer.echo(bubble_sort(n))
 
 @app.command("sort_bucket")
-def cmd_bucket_sort(n: Optional[List[float]] = typer.Argument(None), buckets: int | None = None) -> None:
+def cmd_bucket_sort(buckets: int | None = None, n: Optional[List[float]] = typer.Argument(None)) -> None:
     """Вызов sort_bucket"""
     if n is None:
         n = []
