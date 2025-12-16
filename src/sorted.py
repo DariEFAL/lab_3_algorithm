@@ -59,7 +59,7 @@ def radix_sort(n: list[int], base: int = 10) -> list[int]:
     n = [i + shift for i in n]
 
     mx_digit = max(len(str(i)) for i in n)
-    arr: list[list[int]] = [[] for i in range(base)]
+    arr = [[] for i in range(base)]
 
     for i in range(0, mx_digit):
         for j in n:
@@ -85,7 +85,7 @@ def bucket_sort(n: list[float], buckets: int | None = None) -> list[float]:
         return n[:]
 
     bucket_width = (mx - mn) / buckets
-    bucket_list: list[list[float]] = [[] for i in range(buckets)]
+    bucket_list = [[] for i in range(buckets)]
 
     for x in n:
         i = int((x - mn) / bucket_width)
