@@ -85,11 +85,6 @@ def cmd_сounting_sort(n: Optional[List[int]] = typer.Argument(None)) -> None:
     n = list(map(int, n))
     typer.echo(counting_sort(n))
 
-@app.command("stack")
-def cmd_сounting_sort(n: Optional[List[int]] = typer.Argument(None)) -> None:
-    """Вызов режима стека"""
-    stack = Stack()
-
 
 @app.command("stack")
 def cmd_stack() -> None:
@@ -125,6 +120,7 @@ def cmd_stack() -> None:
                 if len(parts) != 2:
                     typer.echo("Неправильный ввод")
                     continue
+
                 value = parts[1]
 
                 try:
@@ -132,6 +128,7 @@ def cmd_stack() -> None:
                         value = int(value)
                     else:
                         value = float(value)
+                        
                 except Exception:
                     pass
 
@@ -232,3 +229,5 @@ def cmd_queue() -> None:
             typer.echo(f"IndexError: {e}")
         except Exception as e:
             typer.echo(f"Неожиданная ошибка: {e}")
+
+
