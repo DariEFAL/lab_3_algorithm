@@ -16,6 +16,8 @@ app = typer.Typer(help="""
                   python src/main.py sort_bubble -- \n
                   python src/main.py sort_bucket -- \n
                   python src/main.py sort_counting --
+                  python src/main.py queue
+                  python src/main.py stack
                   """)
 
 @app.command("factorial")
