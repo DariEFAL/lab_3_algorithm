@@ -1,10 +1,13 @@
 import typer
-from typing import Optional, List
+from typing import Optional, List, Callable
+import ast
 
+from const import ALL_FUNCTION
 from fibo_factorial import factorial, factorial_recursive, fibo, fibo_recursive
 from sorted import heap_sort, quick_sort, radix_sort, bubble_sort, bucket_sort, counting_sort
 from stack_list import Stack
 from queue_list import Queue
+from benchmark import timeit_once, benchmark_sorts
 
 app = typer.Typer(help="""
                   Есть такие команды: \n
@@ -231,3 +234,26 @@ def cmd_queue() -> None:
             typer.echo(f"Неожиданная ошибка: {e}")
 
 
+@app.command("benchmark_once")
+def cmd_benchmark_once() -> None:
+    """Вызов бенчмарк"""
+    try:
+        func_name = typer.prompt("Введите имя функции: ").strip()
+
+        if func_name not in ALL_FUNCTION:
+            raise ValueError(f"Функции {func_name} не существует")
+        
+        func = ALL_FUNCTION[func_name]
+        
+        arg = typer.prompt('Введите позиционные аргументы (вводить надо через пробел: True [1, 4, 2])').strip().split()
+        arg = [ast.literal_eval(i) for i in arg]
+        kwargs = ast.literal_eval(typer.prompt('Введите именнованные аргументы (вводить надо как словарь: {a: 10, lo: 10})').strip())
+        
+        typer.echo(f"Время выполнения {func_name}: {timeit_once(func, *arg, **kwargs):.10f}")
+
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
+    except IndexError as e:
+        typer.echo(f"IndexError: {e}")
+    except Exception as e:
+        typer.echo(f"Неожиданная ошибка: {e}")
