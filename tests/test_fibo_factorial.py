@@ -17,11 +17,15 @@ def test_factorial_large():
 def test_factorial_recursive_basic():
     """Тест базовых случаев факториала черех рекурсию"""
     assert factorial_recursive(0) == 1
-    assert factorial(1) == 1
-    assert factorial(2) == 2
-    assert factorial(3) == 6
-    assert factorial(5) == 120
-    assert factorial(7) == 5040
+    assert factorial_recursive(1) == 1
+    assert factorial_recursive(2) == 2
+    assert factorial_recursive(3) == 6
+    assert factorial_recursive(5) == 120
+    assert factorial_recursive(7) == 5040
+
+def test_factorial_recursive_large():
+    """Тест на большом числе"""
+    assert factorial_recursive(10) == 3628800
 
 def test_fibo_basic():
     """Тест базовых случаев чисел Фибоначчи"""

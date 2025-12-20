@@ -7,8 +7,11 @@
  uv venv
  .venv\Scripts\Activate.ps1
  (Для Linux: source .venv/bin/activate)
+ Установка зависимостей:
  pip install -e .
  python -m src.main функция
+ Вызов тестов: 
+ pytest tests -v
 ```
 - Чтобы для сортировок ввести отрицательные числа надо написать -- перед вводом списка: python src/main.py sortbubble -- 43 -2 -5 0 5
 - Если надо ввести отрицательные числа с именнованными аргументами, то надо вводить так: python src/main.py rand_int --distinct -- 9 -2 10
