@@ -2,6 +2,7 @@ from typing import Callable
 
 from fibo_factorial import factorial, factorial_recursive, fibo, fibo_recursive
 from sorted import heap_sort, quick_sort, radix_sort, bubble_sort, bucket_sort, counting_sort
+from test_keys import rand_float_array, rand_int_array, reverse_sorted, many_duplicates, nearly_sorted
 
 
 ALL_FUNCTION: dict[str, Callable] = {
@@ -14,5 +15,5 @@ ALL_FUNCTION: dict[str, Callable] = {
     "sort_radix": radix_sort,
     "sort_bubble": bubble_sort,
     "sort_bucket": bucket_sort,
-    "sort_counting": counting_sort
+    "sort_counting": counting_sort,
 }

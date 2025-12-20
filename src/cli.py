@@ -8,20 +8,10 @@ from sorted import heap_sort, quick_sort, radix_sort, bubble_sort, bucket_sort, 
 from stack_list import Stack
 from queue_list import Queue
 from benchmark import timeit_once, benchmark_sorts
+from test_keys import rand_float_array, rand_int_array, reverse_sorted, many_duplicates, nearly_sorted
 
-app = typer.Typer(help="""
-                  Есть такие команды: \n
-                  python src/main.py fibo \n
-                  python src/main.py factorial \n
-                  python src/main.py sort_heap -- \n
-                  python src/main.py sort_quick -- \n
-                  python src/main.py sort_radix -- \n
-                  python src/main.py sort_bubble -- \n
-                  python src/main.py sort_bucket -- \n
-                  python src/main.py sort_counting --
-                  python src/main.py queue
-                  python src/main.py stack
-                  """)
+
+app = typer.Typer()
 
 @app.command("factorial")
 def cmd_factorial(n: int, recursive: bool = False) -> None:
@@ -79,7 +69,6 @@ def cmd_bucket_sort(buckets: int | None = None, n: Optional[List[float]] = typer
     n = list(map(float, n))
     typer.echo(bucket_sort(n, buckets))
 
-
 @app.command("sort_counting")
 def cmd_сounting_sort(n: Optional[List[int]] = typer.Argument(None)) -> None:
     """Вызов sort_counting"""
@@ -88,6 +77,85 @@ def cmd_сounting_sort(n: Optional[List[int]] = typer.Argument(None)) -> None:
     n = list(map(int, n))
     typer.echo(counting_sort(n))
 
+@app.command("rand_float")
+def cmd_rand_float(n: int, lo: float = typer.Option(0.0), hi: float = typer.Option(1.0), seed: Optional[int] = typer.Option(None)) -> None:
+    """Вызов rand_float_array"""
+    try:
+        user_input = typer.prompt("Выберите вывод: 1-списком 2-через пробел")
+
+        if user_input == "1":
+            print(rand_float_array(n, lo, hi, seed=seed))
+        elif user_input == "2":
+            print(*rand_float_array(n, lo, hi, seed=seed))
+        else:
+            raise ValueError(f"'Выберите вывод: 1-списком 2-через пробел' не имеет опции {user_input}")
+        
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
+
+@app.command("rand_int")
+def cmd_rand_int(n: int, lo: int, hi: int, distinct: bool = False, seed: Optional[int] = typer.Option(None)) -> None:
+    """Вызов rand_int_array"""
+    try:
+        user_input = typer.prompt("Выберите вывод: 1-списком 2-через пробел")
+
+        if user_input == "1":
+            print(rand_int_array(n, lo, hi, distinct=distinct, seed=seed))
+        elif user_input == "2":
+            print(*rand_int_array(n, lo, hi, distinct=distinct, seed=seed))
+        else:
+            raise ValueError(f"'Выберите вывод: 1-списком 2-через пробел' не имеет опции {user_input}")
+        
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
+
+@app.command("reverse_sorted")
+def cmd_reverse_sorted(n: int) -> None:
+    """Вызов reverse_sorted"""
+    try:
+        user_input = typer.prompt("Выберите вывод: 1-списком 2-через пробел")
+
+        if user_input == "1":
+            print(reverse_sorted(n))
+        elif user_input == "2":
+            print(*reverse_sorted(n))
+        else:
+            raise ValueError(f"'Выберите вывод: 1-списком 2-через пробел' не имеет опции {user_input}")
+        
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
+    
+@app.command("many_duplicates")
+def cmd_many_duplicates(n: int, k_unique: int = typer.Option(5), seed: Optional[int] = typer.Option(None)) -> None:
+    """Вызов many_duplicates"""
+    try:
+        user_input = typer.prompt("Выберите вывод: 1-списком 2-через пробел")
+
+        if user_input == "1":
+            print(many_duplicates(n, k_unique, seed=seed))
+        elif user_input == "2":
+            print(*many_duplicates(n, k_unique, seed=seed))
+        else:
+            raise ValueError(f"'Выберите вывод: 1-списком 2-через пробел' не имеет опции {user_input}")
+        
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
+
+@app.command("nearly_sorted")
+def nearly_sorted(n: int, swaps: int, seed: Optional[int] = typer.Option(None)) -> None:
+    """Вызов nearly_sorted"""
+    try:
+        user_input = typer.prompt("Выберите вывод: 1-списком 2-через пробел")
+
+        if user_input == "1":
+            print(nearly_sorted(n, swaps, seed=seed))
+        elif user_input == "2":
+            print(*nearly_sorted(n, swaps, seed=seed))
+        else:
+            raise ValueError(f"'Выберите вывод: 1-списком 2-через пробел' не имеет опции {user_input}")
+        
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
 
 @app.command("stack")
 def cmd_stack() -> None:
@@ -165,7 +233,6 @@ def cmd_stack() -> None:
         except Exception as e:
             typer.echo(f"Неожиданная ошибка: {e}")
 
-
 @app.command("queue")
 def cmd_queue() -> None:
     """Интерактивный режим работы с очередью"""
@@ -233,20 +300,27 @@ def cmd_queue() -> None:
         except Exception as e:
             typer.echo(f"Неожиданная ошибка: {e}")
 
-
 @app.command("benchmark_once")
 def cmd_benchmark_once() -> None:
     """Вызов бенчмарк"""
     try:
-        func_name = typer.prompt("Введите имя функции: ").strip()
+        func_name = typer.prompt("Введите имя функции").strip()
 
         if func_name not in ALL_FUNCTION:
             raise ValueError(f"Функции {func_name} не существует")
         
         func = ALL_FUNCTION[func_name]
-        
-        arg = typer.prompt('Введите позиционные аргументы (вводить аргументы надо через пробел: True [1,4,2])').strip().split()
-        arg = [ast.literal_eval(i) for i in arg]
+
+        arg = []
+        typer.echo("Введите позиционные аргументы каждый раз начиная с новой строки (Список вводить так: [1, 4, 2]). Если закончили введите -")
+        while True:
+            argument = typer.prompt(">").strip()
+
+            if argument == "-":
+                break
+
+            arg.append(ast.literal_eval(argument))
+
         kwargs = ast.literal_eval(typer.prompt('Введите именнованные аргументы (вводить надо как словарь: {"a": 10, "lo": 10})').strip())
         
         typer.echo(f"Время выполнения {func_name}: {timeit_once(func, *arg, **kwargs):.10f}")
@@ -258,3 +332,51 @@ def cmd_benchmark_once() -> None:
     except Exception as e:
         typer.echo(f"Неожиданная ошибка: {e}")
 
+@app.command("benchmark_sorted")
+def cmd_benchmark_sorted() -> None:
+    """Вызов бенчмарк для сравнения алгоритмов сортировок"""
+    try:
+        algos = {}
+        arrays = {}
+
+        typer.echo("Введите каждый раз начиная с новой строки имя функций сортировок, алгоритмы которых хотите сравнить. Если закончили введите -")
+        while True:
+            func_name = typer.prompt(">").strip()
+
+            if func_name == "-":
+                break
+            if func_name not in ALL_FUNCTION:
+                raise ValueError(f"Функции {func_name} не существует")
+            
+            algos[func_name] = ALL_FUNCTION[func_name]
+        
+        typer.echo("Введите каждый раз начиная с новой строки масивы, по которым хотите провести сравнение: [2, 4, 3]. Если закончили введите -")
+        while True:
+            array = typer.prompt(">").strip()
+
+            if array == "-":
+                break
+
+            array_name = typer.prompt("Введите название масива").strip()
+            
+            arrays[array_name] = ast.literal_eval(array)
+        
+        result = benchmark_sorts(arrays, algos)
+
+        print(f"{'Названия массива:':<30}", end='')
+        for name in algos.keys():
+            print(f"{name:<15}", end='')
+        print()
+
+        for name_array, alg in result.items():
+            print(f"{name_array:<30}", end='')
+            for res in alg.values():
+                print(f"{res:<15.10f}", end='')
+            print()
+
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
+    except IndexError as e:
+        typer.echo(f"IndexError: {e}")
+    except Exception as e:
+        typer.echo(f"Неожиданная ошибка: {e}")
