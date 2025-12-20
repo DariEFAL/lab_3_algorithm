@@ -1,3 +1,9 @@
+from typing import Callable
+
+from fibo_factorial import factorial, factorial_recursive, fibo, fibo_recursive
+from sorted import heap_sort, quick_sort, radix_sort, bubble_sort, bucket_sort, counting_sort
+
+
 ALL_FUNCTION: dict[str, Callable] = {
     "fibo": fibo,
     "fibo_r": fibo_recursive,

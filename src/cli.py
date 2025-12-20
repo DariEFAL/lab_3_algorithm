@@ -1,5 +1,5 @@
 import typer
-from typing import Optional, List, Callable
+from typing import Optional, List
 import ast
 
 from const import ALL_FUNCTION
@@ -245,9 +245,9 @@ def cmd_benchmark_once() -> None:
         
         func = ALL_FUNCTION[func_name]
         
-        arg = typer.prompt('Введите позиционные аргументы (вводить надо через пробел: True [1, 4, 2])').strip().split()
+        arg = typer.prompt('Введите позиционные аргументы (вводить аргументы надо через пробел: True [1,4,2])').strip().split()
         arg = [ast.literal_eval(i) for i in arg]
-        kwargs = ast.literal_eval(typer.prompt('Введите именнованные аргументы (вводить надо как словарь: {a: 10, lo: 10})').strip())
+        kwargs = ast.literal_eval(typer.prompt('Введите именнованные аргументы (вводить надо как словарь: {"a": 10, "lo": 10})').strip())
         
         typer.echo(f"Время выполнения {func_name}: {timeit_once(func, *arg, **kwargs):.10f}")
 
@@ -257,3 +257,4 @@ def cmd_benchmark_once() -> None:
         typer.echo(f"IndexError: {e}")
     except Exception as e:
         typer.echo(f"Неожиданная ошибка: {e}")
+
