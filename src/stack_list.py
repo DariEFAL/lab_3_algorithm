@@ -1,8 +1,13 @@
-class Stack:
-    def __init__(self):
-        self.stack: list[tuple[int | float | str, int | float | str]] = []
+from typing import TypeVar, Generic, Optional
 
-    def push(self, x: int | float | str) -> None:
+T = TypeVar("T")
+
+class Stack(Generic[T]):
+    def __init__(self, stack_type: Optional[type[T]] = None):
+        self.stack: list[tuple[T, T]] = []
+        self.stack_type: type[T] = stack_type
+
+    def push(self, x: T) -> None:
         """Добавляет элемент в конец стека"""
         if self.is_empty():
             mn_now = x
@@ -11,14 +16,14 @@ class Stack:
 
         self.stack.append((x, mn_now))
 
-    def pop(self) -> int | float | str:
+    def pop(self) -> T:
         """Удаляет и возвращает последний элемент стека"""
         if self.is_empty():
             raise IndexError("Пустой стек")
 
         return self.stack.pop()[0]
 
-    def peek(self) -> int | float | str:
+    def peek(self) -> T:
         """Возвращает последний элемент стека без удаления"""
         if self.is_empty():
             raise IndexError("Пустой стек")
@@ -33,7 +38,7 @@ class Stack:
         """Возвращает количество элементов в стеке"""
         return len(self.stack)
 
-    def min(self) -> int | float | str:
+    def min(self) -> T:
         """Возвращает минимальный элемент в стеке"""
         if self.is_empty():
             raise ValueError("Пустой стек")

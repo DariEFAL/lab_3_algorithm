@@ -2,7 +2,7 @@ import typer
 from typing import Optional, List
 import ast
 
-from const import ALL_FUNCTION
+from const import ALL_FUNCTION, TYPE_T
 from fibo_factorial import factorial, factorial_recursive, fibo, fibo_recursive
 from sorted import heap_sort, quick_sort, radix_sort, bubble_sort, bucket_sort, counting_sort
 from stack_list import Stack
@@ -178,7 +178,13 @@ def nearly_sorted(n: int, swaps: int, seed: Optional[int] = typer.Option(None)) 
 @app.command("stack")
 def cmd_stack() -> None:
     """Интерактивный режим работы со стеком"""
-    st = Stack()
+    t = typer.prompt("Введите тип, с которым вы хотите работать в стеке (int, float, str)").strip()
+
+    if t not in TYPE_T:
+        raise ValueError(f"Тип {t} не поддерживается")
+    
+    t = TYPE_T[t]
+    st = Stack[t](t)
 
     typer.echo("=== Интерактивный режим стека ===")
     typer.echo("Доступные команды:")
@@ -193,7 +199,7 @@ def cmd_stack() -> None:
 
     while True:
         try:
-            user_input = typer.prompt("stack>").strip()
+            user_input = typer.prompt(f"stack({t.__name__})>").strip()
 
             if not user_input:
                 continue
@@ -207,20 +213,23 @@ def cmd_stack() -> None:
 
             elif command == "push":
                 if len(parts) != 2:
-                    typer.echo("Неправильный ввод")
-                    continue
+                    raise ValueError("Неправильный ввод команды push")
 
                 value = parts[1]
 
                 try:
-                    if int(value) == float(value):
+                    if st.stack_type == str:
+                        raise Exception
+                    
+                    value = float(value)
+                    if int(value) == value:
                         value = int(value)
-                    else:
-                        value = float(value)
-                        
                 except Exception:
                     pass
 
+                if not isinstance(value, st.stack_type):
+                    raise ValueError(f"Значение {value} не может быть добавлено в стек типа {st.stack_type}")
+                
                 st.push(value)
 
             elif command == "pop":
@@ -254,7 +263,13 @@ def cmd_stack() -> None:
 @app.command("queue")
 def cmd_queue() -> None:
     """Интерактивный режим работы с очередью"""
-    qu = Queue()
+    t = typer.prompt("Введите тип, с которым вы хотите работать в очереди (int, float, str)")
+
+    if t not in TYPE_T:
+        raise ValueError(f"Тип {t} не поддерживается")
+    
+    t = TYPE_T[t]
+    qu = Queue[t](t)
 
     typer.echo("=== Интерактивный режим очереди ===")
     typer.echo("Доступные команды:")
@@ -264,11 +279,12 @@ def cmd_queue() -> None:
     typer.echo("  size - размер стека")
     typer.echo("  empty - проверка на пустоту")
     typer.echo("  exit - выход")
+
     typer.echo("================================")
 
     while True:
         try:
-            user_input = typer.prompt("queue>").strip()
+            user_input = typer.prompt(f"queue({t.__name__})>").strip()
 
             if not user_input:
                 continue
@@ -287,13 +303,18 @@ def cmd_queue() -> None:
                 value = parts[1]
 
                 try:
-                    if int(value) == float(value):
+                    if qu.queue_type == str:
+                        raise Exception
+                    
+                    value = float(value)
+                    if int(value) == value:
                         value = int(value)
-                    else:
-                        value = float(value)
                 except Exception:
                     pass
 
+                if not isinstance(value, qu.queue_type):
+                    raise ValueError(f"Значение {value} не может быть добавлено в очередь типа {qu.queue_type}")
+                
                 qu.enqueue(value)
 
             elif command == "dequeue":

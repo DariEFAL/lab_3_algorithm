@@ -1,19 +1,24 @@
-class Queue:
-    def __init__(self):
-        self.queue = []
+from typing import TypeVar, Generic, Optional
 
-    def enqueue(self, x: int) -> None:
+T = TypeVar("T")
+
+class Queue(Generic[T]):
+    def __init__(self, queue_type: Optional[type[T]] = None):
+        self.queue: list[T] = []
+        self.queue_type: type[T] = queue_type
+
+    def enqueue(self, x: T) -> None:
         """Добавляет элемент в конец очереди"""
         self.queue.append(x)
 
-    def dequeue(self) -> int:
+    def dequeue(self) -> T:
         """Удаляет и возвращает первый элемент очереди"""
         if self.is_empty():
             raise IndexError("Пустая очередь")
 
         return self.queue.pop(0)
 
-    def front(self) -> int:
+    def front(self) -> T:
         """Возвращает первый элемент очереди без удаления"""
         if self.is_empty():
             raise IndexError("Пустая очередь")
