@@ -7,7 +7,7 @@
  uv venv
  .venv\Scripts\Activate.ps1
  (Для Linux: source .venv/bin/activate)
- pip install -r requirements.txt  
+ pip install -e .
  python -m src.main функция
 ```
 - Чтобы для сортировок ввести отрицательные числа надо написать -- перед вводом списка: python src/main.py sortbubble -- 43 -2 -5 0 5

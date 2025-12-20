@@ -16,18 +16,36 @@ app = typer.Typer()
 @app.command("factorial")
 def cmd_factorial(n: int, recursive: bool = False) -> None:
     """Вызов функций факториала"""
-    if recursive:
-        typer.echo(factorial_recursive(n))
-    else:
-        typer.echo(factorial(n))
+    try:
+        if n < 0:
+            raise ValueError("Нельзя получить факториал от отрицательного числа")
+        
+        if recursive:
+            typer.echo(factorial_recursive(n))
+        else:
+            typer.echo(factorial(n))
+
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
+    except Exception as e:
+        typer.echo(f"Неожиданная ошибка: {e}")
 
 @app.command("fibo")
 def cmd_fibo(n: int, recursive: bool = False) -> None:
     """Вызов функций фибоначи"""
-    if recursive:
-        typer.echo(fibo_recursive(n))
-    else:
-        typer.echo(fibo(n))
+    try:
+        if n < 0:
+            raise ValueError("Нельзя получить число фибоначи от отрицательного числа")
+        
+        if recursive:
+            typer.echo(fibo_recursive(n))
+        else:
+            typer.echo(fibo(n))
+
+    except ValueError as e:
+        typer.echo(f"ValueError: {e}")
+    except Exception as e:
+        typer.echo(f"Неожиданная ошибка: {e}")
 
 @app.command("sort_heap")
 def cmd_heap_sort(n: Optional[List[str]] = typer.Argument(None)) -> None:
